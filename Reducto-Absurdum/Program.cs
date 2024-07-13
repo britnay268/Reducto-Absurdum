@@ -11,21 +11,33 @@ List<Product> products = new List<Product>()
         Name = "Pixie Dust",
         Price = 12.99M,
         Available = true,
-        ProductTypeId = 3
+        ProductTypeId = new ProductType
+        {
+            Name = "Enchanted Objects",
+            id = 3,
+        }
     },
     new Product()
     {
         Name = "Wizard Wand",
         Price = 22.49M,
         Available = true,
-        ProductTypeId = 4
+        ProductTypeId = new ProductType
+        {
+            Name = "Wands",
+            id = 4,
+        }
     },
     new Product()
     {
         Name = "Flying Brookstick",
         Price = 122.09M,
         Available = false,
-        ProductTypeId = 3
+        ProductTypeId = new ProductType
+        {
+            Name = "Enchanted Objects",
+            id = 3,
+        }
     },
 };
 
@@ -53,7 +65,7 @@ List<ProductType> productTypes = new List<ProductType>()
     }
 };
 
-string choice = null;
+string? choice = null;
 
 while (choice != "0")
 {
@@ -67,29 +79,17 @@ while (choice != "0")
     choice = Console.ReadLine();
 
     if (choice == "0")
-    {
         Console.WriteLine("You have exited!");
-    }
     else if (choice == "1")
-    {
         ViewAllProducts();
-    }
     else if (choice == "2")
-    {
         AddProducts();
-    }
     else if (choice == "3")
-    {
         DeleteProduct();
-    }
     else if (choice == "4")
-    {
         UpdateProduct();
-    }
     else
-    {
         Console.WriteLine("Value entered is invalid, try again!");
-    }
 };
 
 void ViewAllProducts()
@@ -103,41 +103,75 @@ void ViewAllProducts()
 
 void AddProducts()
 {
-    Console.WriteLine("Please enter the name of your product: ");
+    bool validInput = false;
 
-    string nameEntered = Console.ReadLine();
-
-    Console.WriteLine("Please enter the price of your product: ");
-
-    decimal priceEntered = decimal.Parse(Console.ReadLine());
-
-    Console.WriteLine(@"Choose a number for your product type:
-    1. Apparel
-    2. Potions
-    3. Enchanted Objects
-    4. Wands");
-
-    int productTypeEntered = int.Parse(Console.ReadLine());
-
-    Product newProduct = new Product
+    while (!validInput)
     {
-        Name = nameEntered,
-        Price = priceEntered,
-        Available = true,
-        ProductTypeId = productTypeEntered
-    };
+        Console.WriteLine("Please enter the name of your product: ");
 
-    products.Add(newProduct);
+        string nameEntered = Console.ReadLine();
 
-    Console.WriteLine($"You added {newProduct.Name} which costs ${newProduct.Price}.");
+        Console.WriteLine("Please enter the price of your product: ");
+
+        decimal priceEntered = decimal.Parse(Console.ReadLine());
+
+        Console.WriteLine(@"Choose a number for your product type:");
+
+        int i = 1;
+        foreach(ProductType productType in productTypes)
+        {
+            Console.WriteLine($"{i++}. {ProductType(productType)}");
+        }
+
+        int productTypeEntered = int.Parse(Console.ReadLine());
+
+        if (productTypeEntered > 0 && productTypeEntered < productTypes.Count)
+        {
+            int productTypeIndex = productTypeEntered - 1;
+            ProductType selectedProductType = productTypes[productTypeIndex];
+
+            Product newProduct = new Product
+            {
+                Name = nameEntered,
+                Price = priceEntered,
+                Available = true,
+                ProductTypeId = selectedProductType,
+            };
+
+            products.Add(newProduct);
+
+            Console.WriteLine($"You added {newProduct.Name} which costs ${newProduct.Price}.");
+
+            validInput = true;
+        }
+        else
+        {
+            Console.WriteLine("Please enter a valid option from the product type!");
+        }
+    }
 }
 
 void DeleteProduct()
 {
-    Console.WriteLine("Delete a product");
+    Console.WriteLine("Choose a product by number that you want to delete: ");
+
+    ViewAllProducts();
+
+    int choice = int.Parse(Console.ReadLine());
+
+    products.RemoveAt(choice - 1);
+
+    Console.WriteLine("You have successfully removed the product from the list!");
 }
 
 void UpdateProduct()
 {
     Console.WriteLine("Update a product");
+}
+
+string ProductType(ProductType productType)
+{
+    string productTypeString = productType.Name;
+
+    return productTypeString;
 }
