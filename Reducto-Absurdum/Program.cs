@@ -65,7 +65,7 @@ List<ProductType> productTypes = new List<ProductType>()
     }
 };
 
-string choice = null;
+string? choice = null;
 
 while (choice != "0")
 {
@@ -103,38 +103,52 @@ void ViewAllProducts()
 
 void AddProducts()
 {
-    Console.WriteLine("Please enter the name of your product: ");
+    bool validInput = false;
 
-    string nameEntered = Console.ReadLine();
-
-    Console.WriteLine("Please enter the price of your product: ");
-
-    decimal priceEntered = decimal.Parse(Console.ReadLine());
-
-    Console.WriteLine(@"Choose a number for your product type:");
-
-    int i = 1;
-    foreach(ProductType productType in productTypes)
+    while (!validInput)
     {
-        Console.WriteLine($"{i++}. {ProductType(productType)}");
+        Console.WriteLine("Please enter the name of your product: ");
+
+        string nameEntered = Console.ReadLine();
+
+        Console.WriteLine("Please enter the price of your product: ");
+
+        decimal priceEntered = decimal.Parse(Console.ReadLine());
+
+        Console.WriteLine(@"Choose a number for your product type:");
+
+        int i = 1;
+        foreach(ProductType productType in productTypes)
+        {
+            Console.WriteLine($"{i++}. {ProductType(productType)}");
+        }
+
+        int productTypeEntered = int.Parse(Console.ReadLine());
+
+        if (productTypeEntered > 0 && productTypeEntered < productTypes.Count)
+        {
+            int productTypeIndex = productTypeEntered - 1;
+            ProductType selectedProductType = productTypes[productTypeIndex];
+
+            Product newProduct = new Product
+            {
+                Name = nameEntered,
+                Price = priceEntered,
+                Available = true,
+                ProductTypeId = selectedProductType,
+            };
+
+            products.Add(newProduct);
+
+            Console.WriteLine($"You added {newProduct.Name} which costs ${newProduct.Price}.");
+
+            validInput = true;
+        }
+        else
+        {
+            Console.WriteLine("Please enter a valid option from the product type!");
+        }
     }
-
-    int productTypeEntered = int.Parse(Console.ReadLine());
-
-    int productTypeIndex = productTypeEntered - 1;
-    ProductType selectedProductType = productTypes[productTypeIndex];
-
-    Product newProduct = new Product
-    {
-        Name = nameEntered,
-        Price = priceEntered,
-        Available = true,
-        ProductTypeId = selectedProductType,
-    };
-
-    products.Add(newProduct);
-
-    Console.WriteLine($"You added {newProduct.Name} which costs ${newProduct.Price} with the Product Type {newProduct.ProductTypeId.Name}.");
 }
 
 void DeleteProduct()
