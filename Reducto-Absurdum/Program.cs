@@ -153,11 +153,15 @@ void AddProducts()
 
 void DeleteProduct()
 {
-    Console.WriteLine("Choose a product you want to delete: ");
+    Console.WriteLine("Choose a product by number that you want to delete: ");
 
     ViewAllProducts();
 
     int choice = int.Parse(Console.ReadLine());
+
+    products.RemoveAt(choice - 1);
+
+    Console.WriteLine("You have successfully removed the product from the list!");
 }
 
 void UpdateProduct()
