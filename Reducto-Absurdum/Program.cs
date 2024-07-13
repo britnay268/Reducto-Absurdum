@@ -101,6 +101,15 @@ void ViewAllProducts()
     }
 };
 
+void ViewAllProductTypes()
+{
+    int i = 1;
+    foreach (ProductType productType in productTypes)
+    {
+        Console.WriteLine($"{i++}. {ProductType(productType)}");
+    }
+}
+
 void AddProducts()
 {
     bool validInput = false;
@@ -117,11 +126,7 @@ void AddProducts()
 
         Console.WriteLine(@"Choose a number for your product type:");
 
-        int i = 1;
-        foreach(ProductType productType in productTypes)
-        {
-            Console.WriteLine($"{i++}. {ProductType(productType)}");
-        }
+        ViewAllProductTypes();
 
         int productTypeEntered = int.Parse(Console.ReadLine());
 
@@ -166,7 +171,94 @@ void DeleteProduct()
 
 void UpdateProduct()
 {
-    Console.WriteLine("Update a product");
+    Console.WriteLine("Choose a product (by number) you would like to update");
+
+    ViewAllProducts();
+
+    int choice = int.Parse(Console.ReadLine());
+
+    Product chosenProduct = null;
+
+    chosenProduct = products[choice - 1];
+
+    void UserChosenProduct()
+    {
+        Console.WriteLine($@"You have chosen:
+        Name: {chosenProduct.Name}
+        Price: {chosenProduct.Price}
+        Available: {chosenProduct.Available}
+        Product Type ID: {chosenProduct.ProductTypeId.id}
+        Product Type Name: { chosenProduct.ProductTypeId.Name}
+        ");
+    }
+
+    UserChosenProduct();
+
+    Console.WriteLine(@"Please choose an option (by number) to edit:
+    1. Name
+    2. Price
+    3. Availability
+    4. Product Type");
+
+    int selection = int.Parse(Console.ReadLine());
+
+    switch (selection)
+    {
+        case 1:
+            Console.WriteLine("Enter a new name for the product:");
+            string newName = Console.ReadLine();
+            products[choice - 1].Name = newName;
+            Console.WriteLine("The name of the chosen Product has been updated!");
+            UserChosenProduct();
+            break;
+        case 2:
+            Console.WriteLine("Enter a new price for the product:");
+            decimal newPrice = decimal.Parse(Console.ReadLine());
+            products[choice - 1].Price = newPrice;
+            Console.WriteLine("The price of the chosen Product has been updated!");
+            UserChosenProduct();
+            break;
+        case 3:
+            Console.WriteLine(@"Select an option (by number) for product's availability:
+            1. Available
+            2. Sold");
+            string newAvailability = Console.ReadLine();
+            if (newAvailability == "1")
+            {
+                products[choice - 1].Available = true;
+            }
+            else if (newAvailability == "2")
+            {
+                products[choice - 1].Available = false;
+            }
+            Console.WriteLine("The availability of the chosen Product has been updated!");
+            UserChosenProduct();
+            break;
+        case 4:
+            bool validInput = false;
+            while (!validInput)
+            {
+                Console.WriteLine("Select a new product type (by number) for the product:");
+                ViewAllProductTypes();
+                int newProductType = int.Parse(Console.ReadLine());
+
+                if (newProductType > 0 && newProductType <= productTypes.Count)
+                {
+                    products[choice - 1].ProductTypeId.id = newProductType;
+                    products[choice - 1].ProductTypeId.Name = productTypes[newProductType - 1].Name;
+                    UserChosenProduct();
+                    validInput = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid selection. Please choose an option from the list!");
+                }
+            }
+            break;
+        default:
+            Console.WriteLine("Try again!");
+            break;
+    }
 }
 
 string ProductType(ProductType productType)
