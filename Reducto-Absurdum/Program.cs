@@ -11,21 +11,33 @@ List<Product> products = new List<Product>()
         Name = "Pixie Dust",
         Price = 12.99M,
         Available = true,
-        ProductTypeId = 3
+        ProductTypeId = new ProductType
+        {
+            Name = "Enchanted Objects",
+            id = 3,
+        }
     },
     new Product()
     {
         Name = "Wizard Wand",
         Price = 22.49M,
         Available = true,
-        ProductTypeId = 4
+        ProductTypeId = new ProductType
+        {
+            Name = "Wands",
+            id = 4,
+        }
     },
     new Product()
     {
         Name = "Flying Brookstick",
         Price = 122.09M,
         Available = false,
-        ProductTypeId = 3
+        ProductTypeId = new ProductType
+        {
+            Name = "Enchanted Objects",
+            id = 3,
+        }
     },
 };
 
@@ -67,29 +79,17 @@ while (choice != "0")
     choice = Console.ReadLine();
 
     if (choice == "0")
-    {
         Console.WriteLine("You have exited!");
-    }
     else if (choice == "1")
-    {
         ViewAllProducts();
-    }
     else if (choice == "2")
-    {
         AddProducts();
-    }
     else if (choice == "3")
-    {
         DeleteProduct();
-    }
     else if (choice == "4")
-    {
         UpdateProduct();
-    }
     else
-    {
         Console.WriteLine("Value entered is invalid, try again!");
-    }
 };
 
 void ViewAllProducts()
@@ -111,33 +111,49 @@ void AddProducts()
 
     decimal priceEntered = decimal.Parse(Console.ReadLine());
 
-    Console.WriteLine(@"Choose a number for your product type:
-    1. Apparel
-    2. Potions
-    3. Enchanted Objects
-    4. Wands");
+    Console.WriteLine(@"Choose a number for your product type:");
+
+    int i = 1;
+    foreach(ProductType productType in productTypes)
+    {
+        Console.WriteLine($"{i++}. {ProductType(productType)}");
+    }
 
     int productTypeEntered = int.Parse(Console.ReadLine());
+
+    int productTypeIndex = productTypeEntered - 1;
+    ProductType selectedProductType = productTypes[productTypeIndex];
 
     Product newProduct = new Product
     {
         Name = nameEntered,
         Price = priceEntered,
         Available = true,
-        ProductTypeId = productTypeEntered
+        ProductTypeId = selectedProductType,
     };
 
     products.Add(newProduct);
 
-    Console.WriteLine($"You added {newProduct.Name} which costs ${newProduct.Price}.");
+    Console.WriteLine($"You added {newProduct.Name} which costs ${newProduct.Price} with the Product Type {newProduct.ProductTypeId.Name}.");
 }
 
 void DeleteProduct()
 {
-    Console.WriteLine("Delete a product");
+    Console.WriteLine("Choose a product you want to delete: ");
+
+    ViewAllProducts();
+
+    int choice = int.Parse(Console.ReadLine());
 }
 
 void UpdateProduct()
 {
     Console.WriteLine("Update a product");
+}
+
+string ProductType(ProductType productType)
+{
+    string productTypeString = productType.Name;
+
+    return productTypeString;
 }
