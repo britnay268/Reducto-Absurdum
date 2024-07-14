@@ -39,6 +39,39 @@ List<Product> products = new List<Product>()
             id = 3,
         }
     },
+    new Product()
+    {
+        Name = "Harry Potter Tshirt",
+        Price = 25.99M,
+        Available = true,
+        ProductTypeId = new ProductType
+        {
+             Name = "Apparel",
+             id = 1,
+        }
+    },
+    new Product()
+    {
+        Name = "Draught of Peace",
+        Price = 22.99M,
+        Available = true,
+        ProductTypeId = new ProductType
+        {
+             Name = "Potions",
+             id = 2,
+        }
+    },
+    new Product()
+    {
+        Name = "Elixir of Life",
+        Price = 52.99M,
+        Available = true,
+        ProductTypeId = new ProductType
+        {
+             Name = "Potions",
+             id = 2,
+        }
+    },
 };
 
 List<ProductType> productTypes = new List<ProductType>()
@@ -74,22 +107,56 @@ while (choice != "0")
     1. View all Products
     2. Add a product to the inventory
     3. Delete a product from the inventory
-    4. Update a product's details");
+    4. Update a product's details
+    5. Search product by product type");
 
     choice = Console.ReadLine();
 
-    if (choice == "0")
-        Console.WriteLine("You have exited!");
-    else if (choice == "1")
-        ViewAllProducts();
-    else if (choice == "2")
-        AddProducts();
-    else if (choice == "3")
-        DeleteProduct();
-    else if (choice == "4")
-        UpdateProduct();
-    else
-        Console.WriteLine("Value entered is invalid, try again!");
+    //if (choice == "0")
+    //    Console.WriteLine("You have exited!");
+    //else if (choice == "1")
+    //    ViewAllProducts();
+    //else if (choice == "2")
+    //    AddProducts();
+    //else if (choice == "3")
+    //    DeleteProduct();
+    //else if (choice == "4")
+    //    UpdateProduct();
+    //else if (choice == "5")
+    //    SearchByProductType();
+    //else
+    //    Console.WriteLine("Value entered is invalid, try again!");
+
+    switch (choice)
+    {
+        case "1":
+            ViewAllProducts();
+            break;
+        case "2":
+            AddProducts();
+            break;
+        case "3":
+            DeleteProduct();
+            break;
+        case "4":
+            UpdateProduct();
+            break;
+        case "5":
+            SearchByProductType();
+            break;
+        default:
+            if (choice.Equals("0"))
+            {
+                Console.WriteLine("You have exited!");
+                break;
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Please choose a valid option!");
+            }
+            break;
+    }
 };
 
 void ViewAllProducts()
@@ -266,4 +333,41 @@ string ProductType(ProductType productType)
     string productTypeString = productType.Name;
 
     return productTypeString;
+}
+
+void SearchByProductType()
+{
+    bool validInput = false;
+
+    while (!validInput)
+    {
+        try
+        {
+            Console.WriteLine("Select a product type (by number) to look for a product:");
+
+            ViewAllProductTypes();
+
+            int choice = int.Parse(Console.ReadLine());
+
+            if (choice > 0 && choice <= productTypes.Count)
+            {
+                List<string> productByType = products.Where(p => p.ProductTypeId.id == choice).Select(p => p.Name).ToList();
+
+                foreach (string name in productByType)
+                {
+                    Console.WriteLine(name);
+                }
+                validInput = true;
+            }
+            else
+            {
+                Console.WriteLine("Your selection is out of range. Please choose a number that matches the product type!");
+            }
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Error: Please enter a number!");
+        }  
+    }
+
 }
