@@ -341,26 +341,33 @@ void SearchByProductType()
 
     while (!validInput)
     {
-        Console.WriteLine("Select a product type (by number) to look for a product:");
-
-        ViewAllProductTypes();
-
-        int choice = int.Parse(Console.ReadLine());
-
-        if (choice > 0 && choice <= productTypes.Count)
+        try
         {
-            List<string> productByType = products.Where(p => p.ProductTypeId.id == choice).Select(p => p.Name).ToList();
+            Console.WriteLine("Select a product type (by number) to look for a product:");
 
-            foreach (string name in productByType)
+            ViewAllProductTypes();
+
+            int choice = int.Parse(Console.ReadLine());
+
+            if (choice > 0 && choice <= productTypes.Count)
             {
-                Console.WriteLine(name);
+                List<string> productByType = products.Where(p => p.ProductTypeId.id == choice).Select(p => p.Name).ToList();
+
+                foreach (string name in productByType)
+                {
+                    Console.WriteLine(name);
+                }
+                validInput = true;
             }
-            validInput = true;
+            else
+            {
+                Console.WriteLine("Your selection is out of range. Please choose a number that matches the product type!");
+            }
         }
-        else
+        catch (FormatException)
         {
-            Console.WriteLine("Your selection is out of range. Please choose a number that matches the product type!");
-        }
+            Console.WriteLine("Error: Please enter a number!");
+        }  
     }
 
 }
