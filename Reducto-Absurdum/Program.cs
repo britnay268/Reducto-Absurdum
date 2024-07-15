@@ -15,7 +15,8 @@ List<Product> products = new List<Product>()
         {
             Name = "Enchanted Objects",
             id = 3,
-        }
+        },
+        DateStocked = new DateTime(2024, 7, 1),
     },
     new Product()
     {
@@ -26,7 +27,8 @@ List<Product> products = new List<Product>()
         {
             Name = "Wands",
             id = 4,
-        }
+        },
+        DateStocked = new DateTime(2024, 6, 30),
     },
     new Product()
     {
@@ -37,7 +39,8 @@ List<Product> products = new List<Product>()
         {
             Name = "Enchanted Objects",
             id = 3,
-        }
+        },
+        DateStocked = new DateTime(2024, 6, 21),
     },
     new Product()
     {
@@ -48,7 +51,8 @@ List<Product> products = new List<Product>()
         {
              Name = "Apparel",
              id = 1,
-        }
+        },
+        DateStocked = new DateTime(2024, 7, 7),
     },
     new Product()
     {
@@ -59,7 +63,8 @@ List<Product> products = new List<Product>()
         {
              Name = "Potions",
              id = 2,
-        }
+        },
+        DateStocked = new DateTime(2024, 5, 11),
     },
     new Product()
     {
@@ -70,7 +75,8 @@ List<Product> products = new List<Product>()
         {
              Name = "Potions",
              id = 2,
-        }
+        },
+        DateStocked = new DateTime(2024, 6, 17),
     },
 };
 
@@ -164,7 +170,7 @@ void ViewAllProducts()
     Console.WriteLine("Products:");
     for (int i = 0; i < products.Count; i++)
     {
-        Console.WriteLine($"{i + 1}. {products[i].Name}");
+        Console.WriteLine($"{i + 1}. {products[i].Name}, days on shelf: {products[i].DaysOnShelf}");
     }
 };
 
