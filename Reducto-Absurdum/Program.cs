@@ -118,21 +118,6 @@ while (choice != "0")
 
     choice = Console.ReadLine();
 
-    //if (choice == "0")
-    //    Console.WriteLine("You have exited!");
-    //else if (choice == "1")
-    //    ViewAllProducts();
-    //else if (choice == "2")
-    //    AddProducts();
-    //else if (choice == "3")
-    //    DeleteProduct();
-    //else if (choice == "4")
-    //    UpdateProduct();
-    //else if (choice == "5")
-    //    SearchByProductType();
-    //else
-    //    Console.WriteLine("Value entered is invalid, try again!");
-
     switch (choice)
     {
         case "1":
@@ -168,9 +153,12 @@ while (choice != "0")
 void ViewAllProducts()
 {
     Console.WriteLine("Products:");
-    for (int i = 0; i < products.Count; i++)
-    {
-        Console.WriteLine($"{i + 1}. {products[i].Name}, days on shelf: {products[i].DaysOnShelf}");
+    int i = 1;
+    List<string> allproducts = products.Select(p => p.Name).ToList();
+
+    foreach (string product in allproducts)
+    { 
+        Console.WriteLine($"{i++}. {product}");
     }
 };
 
